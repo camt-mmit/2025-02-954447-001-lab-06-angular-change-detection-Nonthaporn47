@@ -1,0 +1,33 @@
+<h2>Dynamix Section</h2>
+
+<div>
+  <button type="button" (click)="addSection()">Add Section</button>
+</div>
+@for (inputs of sections; track inputs) {
+  <div>
+    <button type="button" (click)="add($index)">Input</button>
+    <p>Section {{ $index + 1 }}</p>
+
+    <button type="button" (click)="removeSection($index)">X</button>
+  </div>
+
+  @for (item of inputs; track item) {
+    <div>
+      <label>
+        <b>Number {{ $index + 1 }}</b>
+        <input
+          type="number"
+          #elem
+          [value]="item.value"
+          (change)="onChange($index, elem.valueAsNumber)"
+        />
+      </label>
+
+      <button type="button" (click)="remove($index)">X</button>
+    </div>
+  }
+
+  <b
+    >Result <output>{{ getResult() }}</output></b
+  >
+}
