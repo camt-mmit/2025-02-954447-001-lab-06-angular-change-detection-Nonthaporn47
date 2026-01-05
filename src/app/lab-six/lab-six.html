@@ -1,33 +1,62 @@
 <h2>Dynamix Section</h2>
 
-<div>
-  <button type="button" (click)="addSection()">Add Section</button>
+<div class="app-ctl-global">
+  <button type="button" class="app-cl-btn app-cl-primary" (click)="addSection()">+ Section</button>
 </div>
-@for (inputs of sections; track inputs) {
-  <div>
-    <button type="button" (click)="add($index)">Input</button>
-    <p>Section {{ $index + 1 }}</p>
 
-    <button type="button" (click)="removeSection($index)">X</button>
-  </div>
+@for (inputs of sections; let sIndex = $index; track sIndex) {
+  <section class="app-cmp-section">
+    <header>
+      <button type="button" class="app-cl-btn app-cl-primary" (click)="add(sIndex)">+ Input</button>
 
-  @for (item of inputs; track item) {
-    <div>
-      <label>
-        <b>Number {{ $index + 1 }}</b>
-        <input
-          type="number"
-          #elem
-          [value]="item.value"
-          (change)="onChange($index, elem.valueAsNumber)"
-        />
-      </label>
+      Section {{ sIndex + 1 }}
 
-      <button type="button" (click)="remove($index)">X</button>
+      <button
+        type="button"
+        class="app-cl-btn app-cl-icon app-cl-warn"
+        (click)="removeSection(sIndex)"
+        [disabled]="sections.length === 1"
+      >
+        X
+      </button>
+    </header>
+
+    <div class="app-cmp-number-list">
+      @for (item of inputs; let iIndex = $index; track iIndex) {
+        <div class="app-cmp-number">
+          <label>
+            <b>
+              Number
+              <span class="app-title-number">{{ iIndex + 1 }}</span>
+            </b>
+
+            <input
+              type="number"
+              class="app-cl-number"
+              [value]="item.value"
+              (input)="onChange(sIndex, iIndex, $any($event.target).valueAsNumber)"
+            />
+          </label>
+
+          <button
+            type="button"
+            class="app-cl-btn app-cl-icon app-cl-warn"
+            (click)="remove(sIndex, iIndex)"
+            [disabled]="inputs.length === 1"
+          >
+            X
+          </button>
+        </div>
+      }
+
+      <div class="app-cmp-number">
+        <label>
+          <b>Result</b>
+          <output class="app-cl-number">
+            {{ getResult(sIndex) }}
+          </output>
+        </label>
+      </div>
     </div>
-  }
-
-  <b
-    >Result <output>{{ getResult() }}</output></b
-  >
+  </section>
 }
